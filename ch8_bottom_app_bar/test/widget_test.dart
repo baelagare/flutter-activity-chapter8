@@ -8,23 +8,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:ch8_bottom_app_bar/main.dart';
+import 'package:ch8_bottom_app_bar/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('shows central menu with all chapter 8 activities', (WidgetTester tester) async {
+    await tester.pumpWidget(const Chapter8ActivitiesApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Chapter 8 Activities'), findsOneWidget);
+    expect(find.byKey(const ValueKey('Navigator')), findsOneWidget);
+    expect(find.byKey(const ValueKey('Drawer')), findsOneWidget);
+    expect(find.byKey(const ValueKey('TabBar')), findsOneWidget);
+    expect(find.byKey(const ValueKey('Bottom Navigation Bar')), findsOneWidget);
+    expect(find.byKey(const ValueKey('Bottom App Bar')), findsOneWidget);
+    expect(find.byKey(const ValueKey('Hero Animation')), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('navigates from menu to selected activity', (WidgetTester tester) async {
+    await tester.pumpWidget(const Chapter8ActivitiesApp());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('Navigator')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Navigator'), findsOneWidget);
+    expect(find.textContaining('Grateful for:'), findsOneWidget);
   });
 }
