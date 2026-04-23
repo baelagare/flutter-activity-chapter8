@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const _kNoSelection = -1;
+
 class NavigatorActivityScreen extends StatefulWidget {
   const NavigatorActivityScreen({super.key});
 
@@ -20,7 +22,9 @@ class _NavigatorActivityScreenState extends State<NavigatorActivityScreen> {
   Future<void> _openGratitude() async {
     final response = await Navigator.push<String>(
       context,
-      MaterialPageRoute(builder: (_) => const _GratitudeScreen(radioGroupValue: -1)),
+      MaterialPageRoute(
+        builder: (_) => const _GratitudeScreen(radioGroupValue: _kNoSelection),
+      ),
     );
     setState(() {
       _howAreYou = response ?? '';
@@ -90,7 +94,7 @@ class _GratitudeScreenState extends State<_GratitudeScreen> {
   }
 
   void _saveSelection() {
-    final selected = _radioGroupValue >= 0 ? _gratitudeList[_radioGroupValue] : '';
+    final selected = _radioGroupValue > _kNoSelection ? _gratitudeList[_radioGroupValue] : '';
     Navigator.pop(context, selected);
   }
 
@@ -112,7 +116,7 @@ class _GratitudeScreenState extends State<_GratitudeScreen> {
                 groupValue: _radioGroupValue,
                 onChanged: (value) {
                   setState(() {
-                    _radioGroupValue = value ?? -1;
+                    _radioGroupValue = value ?? _kNoSelection;
                   });
                 },
               ),
